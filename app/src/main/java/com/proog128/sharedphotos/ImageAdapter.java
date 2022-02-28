@@ -30,6 +30,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class ImageAdapter extends BaseAdapter {
     private Context context_;
@@ -103,6 +104,9 @@ public class ImageAdapter extends BaseAdapter {
           if(marks_.contains(item.getPath())){
             text.setVisibility(View.VISIBLE);
             text.setText("[[MARKED]]");
+            // TODO: mark with icon + show file name
+            //    text.setText(item.getPath().toString());
+            // TODO: icon mark in SlideshowActivity
           }else{
             text.setVisibility(View.GONE);
           }
@@ -202,6 +206,15 @@ public class ImageAdapter extends BaseAdapter {
     public void toggleMark(IPath target) {
       if(!marks_.remove(target)) marks_.add(target);
       notifyDataSetChanged();
+    }
+
+    public void downloadMarked(){
+      Iterator<IPath> it=marks_.iterator();
+      ImageDownload id=new ImageDownload(context_);
+      while(it.hasNext()) id.run(it.next());
+      marks_.clear();
+      notifyDataSetChanged();
+      /* TODO: show ok */
     }
 
 }

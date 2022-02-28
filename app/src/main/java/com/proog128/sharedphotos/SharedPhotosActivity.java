@@ -133,6 +133,9 @@ public class SharedPhotosActivity extends AppCompatActivity implements LoaderMan
             case R.id.action_settings:
                 openSettingsDialog();
                 return true;
+            case R.id.action_download:
+                adapter_.downloadMarked();
+                return true;
             case R.id.action_info:
                 openInfoDialog();
                 return true;
