@@ -28,10 +28,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.Set;
+import java.util.HashSet;
 
 public class ImageAdapter extends BaseAdapter {
     private Context context_;
     private ArrayList<Item> items_ = new ArrayList<Item>();
+    private static Set<IPath> marks_ = new HashSet<>();
 
     private LayoutInflater inflater_;
 
@@ -48,6 +51,8 @@ public class ImageAdapter extends BaseAdapter {
         items_.clear();
         notifyDataSetChanged();
     }
+
+    public void clearmarks(){ marks_.clear(); }
 
     public void addAll(Collection<IPath> paths, IPath parent, IFilesystem fs) {
         items_.ensureCapacity(paths.size());
@@ -89,15 +94,18 @@ public class ImageAdapter extends BaseAdapter {
         float size = Float.parseFloat(prefs.getString(SettingsActivity.KEY_PREF_THUMBNAIL_SIZE, "1.0"));
         image.getLayoutParams().height = (int) (context_.getResources().getDimension(R.dimen.height) * size);
 
-        if(image.item_ != item) {
-            image.lazySetItem(item);
+        if(image.item_ != item) image.lazySetItem(item);
 
-            if (!item.getPath().isFile()) {
-                text.setVisibility(View.VISIBLE);
-                text.setText(item.getPath().getLastElementName());
-            } else {
-                text.setVisibility(View.GONE);
-            }
+        if (!item.getPath().isFile()) {
+            text.setVisibility(View.VISIBLE);
+            text.setText(item.getPath().getLastElementName());
+        } else {
+          if(marks_.contains(item.getPath())){
+            text.setVisibility(View.VISIBLE);
+            text.setText("[[MARKED]]");
+          }else{
+            text.setVisibility(View.GONE);
+          }
         }
 
         return convertView;
@@ -190,4 +198,10 @@ public class ImageAdapter extends BaseAdapter {
             return thumbnailLoader_;
         }
     }
+
+    public void toggleMark(IPath target) {
+      if(!marks_.remove(target)) marks_.add(target);
+      notifyDataSetChanged();
+    }
+
 }
