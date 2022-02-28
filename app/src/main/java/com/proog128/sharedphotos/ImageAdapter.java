@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.proog128.sharedphotos.filesystem.IFilesystem;
 import com.proog128.sharedphotos.filesystem.IPath;
@@ -102,7 +103,7 @@ public class ImageAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public static class ThumbnailView extends ImageView implements IThumbnailLoaderListener {
+    public static class ThumbnailView extends AppCompatImageView implements IThumbnailLoaderListener {
         private Item item_;
         private static final int BACKGROUND_COLOR = Color.rgb(30, 30, 30);
 
