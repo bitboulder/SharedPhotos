@@ -25,8 +25,7 @@
         android:textColor="#bbbbbb"
       android:background="#77000000"/>
 
-    <view
-        class="androidx.appcompat.widget.AppCompatImageView"
+    <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/mark"

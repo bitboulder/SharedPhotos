@@ -28,14 +28,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
 
 public class ImageAdapter extends BaseAdapter {
     private Context context_;
     private ArrayList<Item> items_ = new ArrayList<Item>();
-    private static Set<IPath> marks_ = new HashSet<>();
 
     private LayoutInflater inflater_;
 
@@ -52,8 +48,6 @@ public class ImageAdapter extends BaseAdapter {
         items_.clear();
         notifyDataSetChanged();
     }
-
-    public void clearmarks(){ marks_.clear(); }
 
     public void addAll(Collection<IPath> paths, IPath parent, IFilesystem fs) {
         items_.ensureCapacity(paths.size());
@@ -106,9 +100,9 @@ public class ImageAdapter extends BaseAdapter {
             }
         }
 
-        AppCompatImageView mark=(AppCompatImageView)convertView.findViewById(R.id.mark);
+        ImageView mark=(ImageView)convertView.findViewById(R.id.mark);
         // TODO: icon mark in SlideshowActivity
-        if(marks_.contains(item.getPath())){
+        if(ImageMarker.isMarked(item.getPath())){
           mark.setImageResource(android.R.drawable.star_big_on);
         }else{
           mark.setImageResource(android.R.color.transparent);
@@ -207,17 +201,13 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public void toggleMark(IPath target) {
-      if(!marks_.remove(target)) marks_.add(target);
+      ImageMarker.toggle(target);
       notifyDataSetChanged();
     }
 
     public void downloadMarked(){
-      Iterator<IPath> it=marks_.iterator();
-      ImageDownload id=new ImageDownload(context_);
-      while(it.hasNext()) id.run(it.next());
-      marks_.clear();
+      ImageMarker.download(new ImageDownload(context_));
       notifyDataSetChanged();
-      /* TODO: show ok */
     }
 
 }

@@ -28,4 +28,11 @@
         android:gravity="center_horizontal"
         android:textSize="26dp"
         style="@style/ImageCaptionOverlayText"/>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/mark"
+        android:layout_alignTop="@id/image"
+        android:layout_alignRight="@id/image" />
 </RelativeLayout>

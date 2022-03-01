@@ -246,7 +246,7 @@ public class SharedPhotosActivity extends AppCompatActivity implements LoaderMan
             fsFactory_.makeDirty(target);
             state_.remove(target.toString());
             
-            adapter_.clearmarks();
+            ImageMarker.clear();
             Bundle b = new Bundle();
             b.putSerializable("path", target);
             getLoaderManager().restartLoader(0, b, this);
@@ -272,7 +272,7 @@ public class SharedPhotosActivity extends AppCompatActivity implements LoaderMan
 
         IPath target = currentPath_.getParent();
 
-        adapter_.clearmarks();
+        ImageMarker.clear();
         Bundle b = new Bundle();
         b.putSerializable("path", target);
         getLoaderManager().restartLoader(0, b, this);

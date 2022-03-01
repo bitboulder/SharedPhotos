@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.fragment.app.Fragment;
@@ -59,6 +60,14 @@ public class PictureFragment extends Fragment implements LoaderManager.LoaderCal
         attacher_ = new PhotoViewAttacher(image_);
 
         getLoaderManager().initLoader(0, null, this);
+
+        ImageView mark=(ImageView)rootView.findViewById(R.id.mark);
+        mark.setBackgroundColor(Color.TRANSPARENT);
+        if(ImageMarker.isMarked(path_)){
+          mark.setImageResource(android.R.drawable.star_big_on);
+        }else{
+          mark.setImageResource(android.R.color.transparent);
+        }
 
         return rootView;
     }
