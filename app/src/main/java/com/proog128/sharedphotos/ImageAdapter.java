@@ -95,22 +95,25 @@ public class ImageAdapter extends BaseAdapter {
         float size = Float.parseFloat(prefs.getString(SettingsActivity.KEY_PREF_THUMBNAIL_SIZE, "1.0"));
         image.getLayoutParams().height = (int) (context_.getResources().getDimension(R.dimen.height) * size);
 
-        if(image.item_ != item) image.lazySetItem(item);
+        if(image.item_ != item) {
+            image.lazySetItem(item);
 
-        if (!item.getPath().isFile()) {
-            text.setVisibility(View.VISIBLE);
-            text.setText(item.getPath().getLastElementName());
-        } else {
-          if(marks_.contains(item.getPath())){
-            text.setVisibility(View.VISIBLE);
-            text.setText("[[MARKED]]");
-            // TODO: mark with icon + show file name
-            //    text.setText(item.getPath().toString());
-            // TODO: icon mark in SlideshowActivity
-          }else{
-            text.setVisibility(View.GONE);
-          }
+            if (!item.getPath().isFile()) {
+                text.setVisibility(View.VISIBLE);
+                text.setText(item.getPath().getLastElementName());
+            } else {
+                text.setVisibility(View.GONE);
+            }
         }
+
+        AppCompatImageView mark=(AppCompatImageView)convertView.findViewById(R.id.mark);
+        // TODO: icon mark in SlideshowActivity
+        if(marks_.contains(item.getPath())){
+          mark.setImageResource(android.R.drawable.star_big_on);
+        }else{
+          mark.setImageResource(android.R.color.transparent);
+        }
+        mark.setBackgroundColor(Color.TRANSPARENT);
 
         return convertView;
     }

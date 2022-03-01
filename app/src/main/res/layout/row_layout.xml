@@ -23,5 +23,13 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:textColor="#bbbbbb"
-        android:background="#77000000"/>
+      android:background="#77000000"/>
+
+    <view
+        class="androidx.appcompat.widget.AppCompatImageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/mark"
+        android:layout_alignTop="@id/image"
+        android:layout_alignRight="@id/image" />
 </RelativeLayout>
