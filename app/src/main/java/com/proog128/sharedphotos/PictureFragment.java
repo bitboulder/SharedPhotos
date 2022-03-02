@@ -75,17 +75,20 @@ public class PictureFragment extends Fragment implements LoaderManager.LoaderCal
           }
         });
 
+        mark_.setOnClickListener(new View.OnClickListener(){
+          @Override
+          public void onClick(View view){
+            if(ImageMarker.used()){
+              ImageMarker.toggle(path_);
+              updMark();
+            }
+          }
+        });
+
         return rootView;
     }
 
-    private void updMark(){
-        mark_.setBackgroundColor(Color.TRANSPARENT);
-        if(ImageMarker.isMarked(path_)){
-          mark_.setImageResource(android.R.drawable.star_big_on);
-        }else{
-          mark_.setImageResource(android.R.color.transparent);
-        }
-    }
+    private void updMark(){ ImageMarker.dplMark(mark_,path_); }
 
     @Override
     public void onDestroyView() {

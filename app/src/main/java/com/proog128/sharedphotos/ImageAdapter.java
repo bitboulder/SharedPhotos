@@ -101,15 +101,23 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         ImageView mark=(ImageView)convertView.findViewById(R.id.mark);
-        // TODO: icon mark in SlideshowActivity
-        if(ImageMarker.isMarked(item.getPath())){
-          mark.setImageResource(android.R.drawable.star_big_on);
-        }else{
-          mark.setImageResource(android.R.color.transparent);
-        }
-        mark.setBackgroundColor(Color.TRANSPARENT);
+        ImageMarker.dplMark(mark,item.getPath());
+        mark.setOnClickListener(new OnMarkClickListener(mark,item.getPath()));
 
         return convertView;
+    }
+
+    private static class OnMarkClickListener implements View.OnClickListener {
+      private ImageView mark_;
+      private IPath path_;
+      public OnMarkClickListener(ImageView mark,IPath path){ mark_=mark; path_=path; }
+      @Override
+      public void onClick(View view){
+        if(ImageMarker.used()){
+          ImageMarker.toggle(path_);
+          ImageMarker.dplMark(mark_,path_);
+        }
+      }
     }
 
     public static class ThumbnailView extends AppCompatImageView implements IThumbnailLoaderListener {
