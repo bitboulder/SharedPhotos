@@ -24,12 +24,15 @@ import com.github.chrisbanes.photoview.PhotoViewAttacher;
 
 import static android.content.Context.UI_MODE_SERVICE;
 
+import android.widget.Toast;
+
 public class PictureFragment extends Fragment implements LoaderManager.LoaderCallbacks<ImageLoader.Image> {
     private IPath path_;
     private ImageView image_;
     private ProgressBar progress_;
     private PhotoViewAttacher attacher_;
     private TextView caption_;
+    private ImageView mark_;
     private int orientation_ = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
 
     public void setUrl(IPath path) {
@@ -58,18 +61,30 @@ public class PictureFragment extends Fragment implements LoaderManager.LoaderCal
         image_ = (ImageView) rootView.findViewById(R.id.image);
         progress_ = (ProgressBar) rootView.findViewById(R.id.progress);
         attacher_ = new PhotoViewAttacher(image_);
+        mark_ = (ImageView)rootView.findViewById(R.id.mark);
 
         getLoaderManager().initLoader(0, null, this);
 
-        ImageView mark=(ImageView)rootView.findViewById(R.id.mark);
-        mark.setBackgroundColor(Color.TRANSPARENT);
-        if(ImageMarker.isMarked(path_)){
-          mark.setImageResource(android.R.drawable.star_big_on);
-        }else{
-          mark.setImageResource(android.R.color.transparent);
-        }
+        updMark();
+        attacher_.setOnLongClickListener(new View.OnLongClickListener(){
+          @Override
+          public boolean onLongClick(View view){
+            ImageMarker.toggle(path_);
+            updMark();
+            return true;
+          }
+        });
 
         return rootView;
+    }
+
+    private void updMark(){
+        mark_.setBackgroundColor(Color.TRANSPARENT);
+        if(ImageMarker.isMarked(path_)){
+          mark_.setImageResource(android.R.drawable.star_big_on);
+        }else{
+          mark_.setImageResource(android.R.color.transparent);
+        }
     }
 
     @Override

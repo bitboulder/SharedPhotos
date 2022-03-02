@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SharedPhotosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<LoaderResult>,IFilesystemServiceListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class SharedPhotosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<LoaderResult>,IFilesystemServiceListener, AdapterView.OnItemClickListener {
     private GridView gridView_;
     private ImageAdapter adapter_;
     private ProgressBar progress_;
@@ -70,7 +70,16 @@ public class SharedPhotosActivity extends AppCompatActivity implements LoaderMan
         gridView_.setAdapter(adapter_);
 
         gridView_.setOnItemClickListener(this);
-        gridView_.setOnItemLongClickListener(this);
+        gridView_.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+          @Override
+          public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            IPath path = adapter_.getItem(position);
+            IPath target = currentPath_.concat(path);
+            if(!target.isFile()) return false;
+            adapter_.toggleMark(path);
+            return true;
+          }
+        });
 
         if(savedInstanceState != null) {
             Object path = savedInstanceState.getSerializable("path");
@@ -251,15 +260,6 @@ public class SharedPhotosActivity extends AppCompatActivity implements LoaderMan
             b.putSerializable("path", target);
             getLoaderManager().restartLoader(0, b, this);
         }
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        IPath path = adapter_.getItem(position);
-        IPath target = currentPath_.concat(path);
-        if(!target.isFile()) return false;
-        adapter_.toggleMark(path);
-        return true;
     }
 
     @Override
