@@ -27,7 +27,7 @@ public class ImageMarker {
   public static void download(ImageDownload id){
     Iterator<IPath> it=marks_.iterator();
     while(it.hasNext()) id.run(it.next());
-    marks_.clear();
+    clear();
   }
 
   public static void dplMark(ImageView mark,IPath path){

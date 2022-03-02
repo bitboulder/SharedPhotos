@@ -24,10 +24,10 @@ public class ImageDownload {
 
   private BroadcastReceiver receiver=new BroadcastReceiver(){
     @Override
-    public void onReceive(Context context,Intent intent){ msg("Download complete"); }
+    public void onReceive(Context context,Intent intent){ Toast.makeText(context_,"Download complete",Toast.LENGTH_LONG).show(); }
   };
 
-  public void msg(String txt){ Toast.makeText(context_,txt,Toast.LENGTH_LONG).show(); }
+  public void msg(String txt){ }
 
   public void run(IPath path){
     Uri uri=Uri.parse(path.getContentUrl());
@@ -37,7 +37,7 @@ public class ImageDownload {
     req.setDescription(String.format("Image Download %s",path.toString()));
     req.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,String.format("SharedPhotos/%s.jpg",path.toString()));
     dm.enqueue(req);
-    msg("Download started");
+    Toast.makeText(context_,"Download started",Toast.LENGTH_LONG).show();
   }
 
 }
